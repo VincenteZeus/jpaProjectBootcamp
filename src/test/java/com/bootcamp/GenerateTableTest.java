@@ -6,9 +6,17 @@ import java.util.Properties;
 
 public class GenerateTableTest {
 
+    String puSql = "tpJpaSql";
+    String puDerby= "tpJpaDerby";
+
     @Test
-    public void generateTablesMysql() {
-        Persistence.generateSchema("tpJpa", new Properties());
+    public void generateTablesSql() {
+        Persistence.generateSchema(puSql, new Properties());
+    }
+
+    @Test
+    public void generateTablesDerby() {
+        Persistence.generateSchema(puDerby, new Properties());
     }
 
 }

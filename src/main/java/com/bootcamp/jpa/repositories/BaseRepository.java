@@ -1,5 +1,8 @@
 package com.bootcamp.jpa.repositories;
 
+import com.bootcamp.jpa.entities.Programme;
+import com.bootcamp.jpa.entities.Projet;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -45,14 +48,6 @@ public class BaseRepository<T> {
         return true;
     }
 
-    public List<T> findManyByProperty(String propertyName, Object value) throws SQLException {
-        String className = getEntityClass().getSimpleName();
-        String query = "select t from " + className + " t where t." + propertyName + "=:param";
-        Query qry = getEm().createQuery(query);
-        qry.setParameter("param", value);
-        return (List<T>) qry.getResultList();
-    }
-
     public T findOneByProperty(String propertyName, Object value) throws SQLException {
         String className = entityClass.getClass().getSimpleName();
         String query = "select t from " + className + " t where t." + propertyName + "=:param";
@@ -61,9 +56,19 @@ public class BaseRepository<T> {
         return (T) qry.getSingleResult();
     }
 
+    public List<T> findEntitiesByProperty(Long propertyId, Object value) throws SQLException {
+        String className = entityClass.getClass().getSimpleName();
+        String query = "SELECT b FROM " + className + " b where b." +propertyId +"=:param";
+        Query qry = getEm().createQuery(query);
+        qry.setParameter("param", value);
+        List<T> listeEntities = qry.getResultList();
+        return listeEntities;
+    }
+
     public List<T> findAll() throws SQLException {
-        String qlString = "SELECT b FROM " + this.entityClass.getSimpleName() + " b";
-        Query q = this.em.createQuery(qlString);
+        String className = entityClass.getClass().getSimpleName();
+        String qlString = "SELECT b FROM " + className + " b";
+        Query q = getEm().createQuery(qlString);
         List<T> listeEntities = q.getResultList();
         return listeEntities;
     }
