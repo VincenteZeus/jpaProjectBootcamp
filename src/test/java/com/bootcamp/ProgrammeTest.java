@@ -1,11 +1,15 @@
 package com.bootcamp;
 
 import com.bootcamp.jpa.entities.IndicateurPerformance;
+import com.bootcamp.jpa.entities.IndicateurQualitatif;
 import com.bootcamp.jpa.entities.Programme;
 import com.bootcamp.jpa.entities.Projet;
 import com.bootcamp.jpa.repositories.BaseRepository;
+import com.google.gson.Gson;
 import org.testng.annotations.Test;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
 
@@ -15,7 +19,7 @@ public class ProgrammeTest extends BaseRepository {
     String puDerby= "tpJpaDerby";
 
     @Test
-    public void createProgrammeSql() throws SQLException {
+    public Programme createProgrammeSql() throws SQLException {
         Date date1 = new Date();
         Date date2 = new Date();
         IndicateurPerformance indicateurPerformance = new IndicateurPerformance();
@@ -33,9 +37,23 @@ public class ProgrammeTest extends BaseRepository {
         test.setBudgetEffectif(1254);
         test.setIndicateurPerformance(indicateurPerformance);
 
-         if (programme.create(test)) {
+         if (programme.create(test))
            System.out.println("Création d'un programme réussi");
-       }
+         return test;
+    }
+
+    @Test
+    public void createJsonFile() throws SQLException {
+        Programme test = createProgrammeSql();
+        Gson gson = new Gson();
+        String json = gson.toJson(test);
+        System.out.println(json);
+        try (FileWriter writer = new FileWriter("json/programmes.json")) {
+            gson.toJson(test, writer);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

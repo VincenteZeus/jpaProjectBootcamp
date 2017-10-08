@@ -3,7 +3,11 @@ package com.bootcamp;
 import com.bootcamp.jpa.entities.*;
 import com.bootcamp.jpa.enums.TypeDeBailleur;
 import com.bootcamp.jpa.repositories.BaseRepository;
+import com.google.gson.Gson;
 import org.testng.annotations.Test;
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,13 +18,28 @@ public class BailleurTest extends BaseRepository {
     String puDerby= "tpJpaDerby";
 
     @Test
-    public void createBailleurSql() throws SQLException {
+    public Bailleur createBailleurSql() throws SQLException {
         BaseRepository<Bailleur> bailleur = new BaseRepository<Bailleur>(puSql, Bailleur.class);
         Bailleur test = new Bailleur();
         test.setNom("Vincent");
         test.setTypeDeBailleur(TypeDeBailleur.gouvernementale);
         if (bailleur.create(test))
             System.out.println("Création d'un bailleur réussi");
+        return test;
+    }
+
+    @Test
+    public void createJsonFile() throws SQLException {
+        Bailleur test = createBailleurSql();
+        Gson gson = new Gson();
+        String json = gson.toJson(test);
+        System.out.println(json);
+        try (FileWriter writer = new FileWriter("json/bailleurs.json")) {
+            gson.toJson(test, writer);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void getBailleursByProgrammeSql() throws SQLException {

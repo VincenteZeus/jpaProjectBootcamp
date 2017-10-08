@@ -1,12 +1,12 @@
 package com.bootcamp;
 
-import com.bootcamp.jpa.entities.IndicateurPerformance;
-import com.bootcamp.jpa.entities.Livrable;
-import com.bootcamp.jpa.entities.Programme;
-import com.bootcamp.jpa.entities.Projet;
+import com.bootcamp.jpa.entities.*;
 import com.bootcamp.jpa.repositories.BaseRepository;
+import com.google.gson.Gson;
 import org.testng.annotations.Test;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
 
@@ -16,7 +16,7 @@ public class LivrableTest extends BaseRepository {
     String puDerby= "tpJpaDerby";
 
     @Test
-    public void createLivrableSql() throws SQLException {
+    public Livrable createLivrableSql() throws SQLException {
         Date date1 = new Date();
         Date date2 = new Date();
         IndicateurPerformance indicateurPerformance = new IndicateurPerformance();
@@ -46,9 +46,23 @@ public class LivrableTest extends BaseRepository {
         test.setDateDeLivraison(date2);
         test.setIndicateurPerformance(indicateurPerformance);
         test.setProjet(projet);
-         if (livrable.create(test)) {
+        if (livrable.create(test))
            System.out.println("Création d'un livrable réussi");
-       }
+        return test;
+    }
+
+    @Test
+    public void createJsonFile() throws SQLException {
+        Livrable test = createLivrableSql();
+        Gson gson = new Gson();
+        String json = gson.toJson(test);
+        System.out.println(json);
+        try (FileWriter writer = new FileWriter("json/livrables.json")) {
+            gson.toJson(test, writer);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

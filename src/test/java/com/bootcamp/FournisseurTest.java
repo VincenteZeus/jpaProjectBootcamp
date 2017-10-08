@@ -2,7 +2,11 @@ package com.bootcamp;
 
 import com.bootcamp.jpa.entities.*;
 import com.bootcamp.jpa.repositories.BaseRepository;
+import com.google.gson.Gson;
 import org.testng.annotations.Test;
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,13 +17,27 @@ public class FournisseurTest extends BaseRepository {
     String puDerby= "tpJpaDerby";
 
     @Test
-    public void createFournisseurSql() throws SQLException {
+    public Fournisseur createFournisseurSql() throws SQLException {
         BaseRepository<Fournisseur> fournisseur = new BaseRepository<Fournisseur>(puSql, Fournisseur.class);
         Fournisseur test = new Fournisseur();
         test.setNom("Vincent");
-         if (fournisseur.create(test)) {
+        if (fournisseur.create(test))
            System.out.println("Création d'un fournisseur réussi");
-       }
+        return test;
+    }
+
+    @Test
+    public void createJsonFile() throws SQLException {
+        Fournisseur test = createFournisseurSql();
+        Gson gson = new Gson();
+        String json = gson.toJson(test);
+        System.out.println(json);
+        try (FileWriter writer = new FileWriter("json/fournisseurs.json")) {
+            gson.toJson(test, writer);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void getFournisseursByProgrammeSql() throws SQLException {

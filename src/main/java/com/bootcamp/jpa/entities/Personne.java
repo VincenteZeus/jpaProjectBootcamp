@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "tp_personne")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@DiscriminatorColumn(name = "TYPE_ENTITE")
 public class Personne implements Serializable {
 
     private static final long serialVersionUID = 1L;

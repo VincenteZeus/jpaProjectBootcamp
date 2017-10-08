@@ -1,10 +1,14 @@
 package com.bootcamp;
 
 import com.bootcamp.jpa.entities.IndicateurPerformance;
+import com.bootcamp.jpa.entities.IndicateurQualitatif;
 import com.bootcamp.jpa.entities.IndicateurQuantitatif;
 import com.bootcamp.jpa.repositories.BaseRepository;
+import com.google.gson.Gson;
 import org.testng.annotations.Test;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class IndicateurQuantitatifTest extends BaseRepository {
@@ -13,7 +17,7 @@ public class IndicateurQuantitatifTest extends BaseRepository {
     String puDerby= "tpJpaDerby";
 
     @Test
-    public void createIndicateurQuantitatifSql() throws SQLException {
+    public IndicateurQuantitatif createIndicateurQuantitatifSql() throws SQLException {
         IndicateurPerformance indicateurPerformance = new IndicateurPerformance();
         indicateurPerformance.setNom("Vincent");
 
@@ -24,8 +28,22 @@ public class IndicateurQuantitatifTest extends BaseRepository {
         test.setValeur(125);
         test.setIndicateurPerformance(indicateurPerformance);
 
-        if (indicateurQuantitatif.create(test)) {
+        if (indicateurQuantitatif.create(test))
             System.out.println("Création d'un indicateur de performance réussi");
+        return test;
+    }
+
+    @Test
+    public void createJsonFile() throws SQLException {
+        IndicateurQuantitatif test = createIndicateurQuantitatifSql();
+        Gson gson = new Gson();
+        String json = gson.toJson(test);
+        System.out.println(json);
+        try (FileWriter writer = new FileWriter("json/quantites.json")) {
+            gson.toJson(test, writer);
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

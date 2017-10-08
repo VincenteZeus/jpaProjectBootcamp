@@ -1,8 +1,5 @@
 package com.bootcamp.jpa.repositories;
 
-import com.bootcamp.jpa.entities.Programme;
-import com.bootcamp.jpa.entities.Projet;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;

@@ -2,7 +2,11 @@ package com.bootcamp;
 
 import com.bootcamp.jpa.entities.*;
 import com.bootcamp.jpa.repositories.BaseRepository;
+import com.google.gson.Gson;
 import org.testng.annotations.Test;
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,13 +17,27 @@ public class BeneficiaireTest extends BaseRepository {
     String puDerby= "tpJpaDerby";
 
     @Test
-    public void createBeneficiaireSql() throws SQLException {
+    public Beneficiaire createBeneficiaireSql() throws SQLException {
         BaseRepository<Beneficiaire> beneficiaire = new BaseRepository<Beneficiaire>(puSql, Beneficiaire.class);
         Beneficiaire test = new Beneficiaire();
         test.setNom("Vincent");
-         if (beneficiaire.create(test)) {
+        if (beneficiaire.create(test))
            System.out.println("Création d'un bénéficiaire réussi");
-       }
+        return test;
+    }
+
+    @Test
+    public void createJsonFile() throws SQLException {
+        Beneficiaire test = createBeneficiaireSql();
+        Gson gson = new Gson();
+        String json = gson.toJson(test);
+        System.out.println(json);
+        try (FileWriter writer = new FileWriter("json/beneficiaires.json")) {
+            gson.toJson(test, writer);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void getBeneficiairesByProgrammeSql() throws SQLException {

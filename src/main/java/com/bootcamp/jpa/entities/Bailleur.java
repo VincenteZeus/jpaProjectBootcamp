@@ -19,7 +19,7 @@ public class Bailleur extends Personne implements Serializable {
     @NotNull(message = "Le champ nom ne peut etre null.")
     @Column(name = "nom", length = 45, nullable = false)
     private String nom;
-    
+
     @NotNull(message = "Le champ type de bailleur ne peut etre null.")
     @Column(name = "typeDeBailleur", length = 45, nullable = false)
     @Enumerated(EnumType.ORDINAL)

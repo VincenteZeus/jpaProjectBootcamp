@@ -12,7 +12,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="jpaProject" target="1.5" />
+      <module name="jpaProject" target="1.7" />
       <module name="jpaProoject" target="1.5" />
       <module name="TpJPA" target="1.5" />
     </bytecodeTargetLevel>
